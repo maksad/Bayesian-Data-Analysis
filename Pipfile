@@ -7,6 +7,11 @@ name = "pypi"
 
 [packages]
 
+numpy = "*"
+scipy = "*"
+matplotlib = "*"
+ipython = "*"
+ipdb = "*"
 
 
 [dev-packages]

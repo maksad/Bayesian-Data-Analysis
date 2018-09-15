@@ -12,10 +12,12 @@ scipy = "*"
 matplotlib = "*"
 ipython = "*"
 ipdb = "*"
+pygments = "*"
 
 
 [dev-packages]
 
+pylint = "*"
 
 
 [requires]

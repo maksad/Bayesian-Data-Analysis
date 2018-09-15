@@ -14,14 +14,15 @@ beta = alfa * (1 - MEAN) / MEAN
 
 x_range = numpy.linspace(0, 1, 100)
 y_range = stats.beta.pdf(x_range, alfa, beta)
-random_samples = stats.beta.rvs(alfa, beta, size=1000)
 
 # a) Plot the density function of Beta-distribution
 axis.plot(x_range, y_range)
+fig.savefig('./ex1/prob_distribution.png')
 
 # b) Take a sample of 1000 random numbers and plot a histogram
+random_samples = stats.beta.rvs(alfa, beta, size=1000)
 axis.hist(random_samples, density=True, alpha=0.5)
-fig.savefig('prob_distribution.png')
+fig.savefig('./ex1/prob_distribution_hist.png')
 
 # c) Compute the sample mean and variance from the drawn sample
 sample_mean = numpy.mean(random_samples)

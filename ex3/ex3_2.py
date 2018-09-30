@@ -39,7 +39,7 @@ p_control = stats.beta.rvs(control_alpha, control_beta, size=10000)
 p_treatment = stats.beta.rvs(treatment_alpha, treatment_beta, size=10000)
 odd_ratio = (p_treatment/(1-p_treatment))/(p_control/(1-p_control))
 
-plt.hist(odd_ratio, density=True, alpha=0.5, bins=40, ec='white')
+plt.hist(odd_ratio, alpha=0.5, bins=40, ec='white')
 plt.savefig('./ex3/report/3_2_b_histog.png')
 plt.figure(0)
 

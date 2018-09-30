@@ -54,11 +54,11 @@ b)
 '''
 std_y = np.std(data, ddof=1)
 scale = sqrt(1 + 1/n) * std_y
-y_posterior_range = stats.t.pdf(
+y_posterior_mu = stats.t.pdf(
     x=x_range,
     df=n-1,
     loc=estimated_mean,
     scale=scale
 )
-figure = plt.plot(x_range, y_posterior_range)
+figure = plt.plot(x_range, y_posterior_mu)
 plt.savefig('./ex3/report/3_1_b_posterior_mean.png')

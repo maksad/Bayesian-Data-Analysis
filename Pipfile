@@ -7,13 +7,12 @@ name = "pypi"
 numpy = "*"
 scipy = "*"
 matplotlib = "*"
-ipython = "*"
-ipdb = "*"
 pygments = "*"
 pandas = "*"
+ipdb = "*"
 
 [dev-packages]
 pylint = "*"
 
 [requires]
-python_version = "3.7"
+python_version = "3.6.5"

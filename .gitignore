@@ -8,4 +8,5 @@ latex.py
 report*.synctex.gz
 _minted-report*
 *.snippets
-Demos/*
+demos/*
+*/demos/*

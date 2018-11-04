@@ -10,6 +10,7 @@ import pystan
 
 #%% The data
 machines = pd.read_fwf('./ex7/factory.txt', header=None).values
+machines_transposed = machines.T
 
 #%% Pooled model
 '''
@@ -74,7 +75,6 @@ generated quantities {
 
 #%% fitting data into the stan model
 model_seperate = pystan.StanModel(model_code=stan_code_separate)
-machines_transposed = machines.T
 data_separate = dict(
     N=machines_transposed.size,
     K=6,
@@ -92,10 +92,68 @@ data_separate = dict(
 #%% sampling
 fit_separate = model_seperate.sampling(data=data_separate, n_jobs=-1)
 print(fit_separate)
-fit_separate.summary()
 
 #%% hist
 y_pred_separate = fit_separate.extract()['ypred']
 plt.hist(y_pred_separate, bins=20, ec='white')
 plt.savefig('./ex7/report/separate_hist.png')
 plt.figure(0)
+
+#%% Hierarchical model
+stan_code_hierarchical = '''
+data {
+    int<lower=0> N;             // number of data points
+    int<lower=0> K;             // number of groups
+    int<lower=1,upper=K> x[N];  // group indicator
+    vector[N] y;
+}
+parameters {
+    real mu0;                   // prior mean
+    real<lower=0> sigma0;       // prior std
+    vector[K] mu;               // group means
+    real<lower=0> sigma;        // common std
+}
+model {
+    mu ~ normal(mu0, sigma0);
+    y ~ normal(mu[x], sigma);
+}
+generated quantities {
+    real ypred6;
+    real mu7;
+    ypred6 = normal_rng(mu[6], sigma);
+    mu7 = normal_rng(mu0, sigma0);
+}
+'''
+
+#%% fitting data into the stan model
+model_hierarchical = pystan.StanModel(model_code=stan_code_hierarchical)
+data_hierarchical = dict(
+    N=machines_transposed.size,
+    K=6,
+    x=[
+        1, 1, 1, 1, 1,
+        2, 2, 2, 2, 2,
+        3, 3, 3, 3, 3,
+        4, 4, 4, 4, 4,
+        5, 5, 5, 5, 5,
+        6, 6, 6, 6, 6,
+    ],
+    y=machines_transposed.flatten()
+)
+
+#%% sampling
+fit_hierarchical = model_seperate.sampling(data=data_hierarchical, n_jobs=-1)
+print(fit_hierarchical)
+
+#%% hist
+y_pred_hierarchical = fit_hierarchical.extract()['ypred']
+plt.hist(y_pred_hierarchical, bins=20, ec='white')
+plt.savefig('./ex7/report/hierarchical_hist.png')
+plt.figure(0)
+
+summary_hierarchical=fit_hierarchical.summary()
+summary_df_hierarchical=pd.DataFrame(
+    summary_hierarchical['summary'],
+    columns=summary_hierarchical['summary_colnames'],
+    index=summary_hierarchical['summary_rownames']
+)

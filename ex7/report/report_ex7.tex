@@ -125,29 +125,42 @@
             machines_pooled = machines.flatten()
           \end{minted}
           The stan model for this is stated in the \textit{Appendix B  Source code for Question 2}.
-          Next, we can use it to make the predictions:
-          \begin{minted}[bgcolor=bg,fontsize=\small,autogobble]{python}
-            fit_pooled = model_pooled.sampling(data=data_pooled)
-          \end{minted}
-          Which gives us this table:
-          \begin{minted}[bgcolor=bg,fontsize=\small,autogobble]{python}
-                    mean se_mean     sd   2.5%    25%    50%    75%  97.5%  n_eff   Rhat
-            mu     92.87    0.06   3.35  86.22  90.65  92.87  95.06  99.41   2748    1.0
-            sigma  18.77    0.05   2.55   14.6  16.94   18.5  20.32  24.68   2468    1.0
-            ypred  93.33    0.32  19.08  55.19  80.93  93.76 105.58 130.87   3550    1.0
-            lp__   -99.3    0.02   0.99 -102.0 -99.66 -99.01  -98.6 -98.35   1759    1.0
-          \end{minted}
-          The prediction histogram looks like this:
-          \begin{center}
-            \includegraphics[width=10cm]{pooled_hist.png}
-            \captionof{figure}{Prediction histogram with pooled model.}
-          \end{center}
 
-          As we combined all the measurements into one, the $\mu$ value will be the same for sixth machine, seventh machine or all the machines combined. As mentioned before we don't treat each machine as a separate entity, that's exacly the reason why all the $\mu$ will be equal. This is how the histogram looks like:
-          \begin{center}
-            \includegraphics[width=10cm]{pooled_hist_mu.png}
-            \captionof{figure}{$\mu$ histogram with pooled model for 6th, 7th or all machines combined.}
-          \end{center}
+          \begin{itemize}
+            \item \textit{the posterior distribution of the mean of the quality measurements of the sixth machine}: \\
+              As we combined all the measurements into one, the $\mu$ value will be the same for sixth machine, seventh machine or all the machines combined. As mentioned before we don't treat each machine as a separate entity, that's exacly the reason why all the $\mu$ will be equal. This is how the histogram looks like:
+              \begin{center}
+                \includegraphics[width=10cm]{pooled_hist_mu.png}
+                \captionof{figure}{$\mu$ histogram with pooled model for 6th, 7th or all machines combined.}
+              \end{center}
+
+            \item \textit{the predictive distribution for another quality measurement of the sixth machine}: \\
+              The prediction will be the same for sixth machine or all combined. We can use the stan to make the predictions:
+              \begin{minted}[bgcolor=bg,fontsize=\small,autogobble]{python}
+                fit_pooled = model_pooled.sampling(data=data_pooled)
+              \end{minted}
+              Which gives us this table:
+              \begin{minted}[bgcolor=bg,fontsize=\small,autogobble]{python}
+                        mean se_mean     sd   2.5%    25%    50%    75%  97.5%  n_eff   Rhat
+                mu     92.87    0.06   3.35  86.22  90.65  92.87  95.06  99.41   2748    1.0
+                sigma  18.77    0.05   2.55   14.6  16.94   18.5  20.32  24.68   2468    1.0
+                ypred  93.33    0.32  19.08  55.19  80.93  93.76 105.58 130.87   3550    1.0
+                lp__   -99.3    0.02   0.99 -102.0 -99.66 -99.01  -98.6 -98.35   1759    1.0
+              \end{minted}
+              The prediction histogram looks like this:
+              \begin{center}
+                \includegraphics[width=10cm]{pooled_hist.png}
+                \captionof{figure}{Prediction histogram with pooled model both for the sixth machine and all combined.}
+              \end{center}
+            \item \textit{the posterior distribution of the mean of the quality measurements of the seventh machine}: \\
+              The answer is stated above in the \textit{the posterior distribution of the mean of the quality measurements of the sixth machine} section.
+          \end{itemize}
+
+
+
+
+
+
 
         \subsection{Separate model}
           In the separate model we treat every machine as an individual entity, thus when calculating $\sigma$ or $\mu$ we take into consideration only a single machine. The combination of all machines should not effect $\sigma$ or $\mu$. The stan model for this is stated in the \textit{Appendix B  Source code for Question 2}

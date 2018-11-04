@@ -40,7 +40,7 @@ transformed parameters {
   mu = alpha + beta * x;
 }
 model {
-  beta ~ normal(0, tau*tau);
+  beta ~ normal(0, tau);
   y ~ normal(mu, sigma);
 }
 generated quantities {
@@ -48,6 +48,10 @@ generated quantities {
   ypred = normal_rng(alpha + beta * xpred, sigma);
 }
 '''
+
+#%% guess of tau
+dist = norm(loc=0, scale=20)
+print(dist.cdf(-69))
 
 #%% fitting data to stan model
 stan_model = pystan.StanModel(model_code=stan_code)
@@ -57,9 +61,14 @@ data = dict(
     x=years,
     y=drowning,
     xpred=2019,
-    tau=5,
+    tau=26.78,
 )
 
 #%% sampling
 fit = stan_model.sampling(data=data)
 print(fit)
+
+#%% hist
+y_pred = fit.extract()['ypred']
+plt.hist(y_pred, bins=20, ec='white')
+plt.show()

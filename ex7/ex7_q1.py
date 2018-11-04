@@ -1,13 +1,14 @@
 #%%
 import matplotlib
 matplotlib.use('TkAgg')
+
+from scipy.stats import norm
 import matplotlib.pyplot as plt
 import numpy as np
 import pandas as pd
-
 import pystan
 
-drowning_data = pd.read_fwf('./Ex7/drowning.txt').values
+drowning_data = pd.read_fwf('./ex7/drowning.txt').values
 years = drowning_data[:, 0]
 drowning = drowning_data[:, 1]
 

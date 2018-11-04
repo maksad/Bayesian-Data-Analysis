@@ -52,6 +52,11 @@ plt.hist(y_pred_pooled, bins=20, ec='white')
 plt.savefig('./ex7/report/pooled_hist.png')
 plt.figure(0)
 
+mu = fit_pooled.extract()['mu']
+plt.hist(mu, bins=20, ec='white')
+plt.savefig('./ex7/report/pooled_hist_mu.png')
+plt.figure(0)
+
 #%% Separate model
 stan_code_separate = '''
 data {
@@ -99,6 +104,12 @@ plt.hist(y_pred_separate, bins=20, ec='white')
 plt.savefig('./ex7/report/separate_hist.png')
 plt.figure(0)
 
+#%% hist
+mu_data_separate = fit_separate.extract()['mu']
+plt.hist(mu_data_separate[:, 5], bins=20, ec='white')
+plt.savefig('./ex7/report/separate_hist_mu_six.png')
+plt.figure(0)
+
 #%% Hierarchical model
 stan_code_hierarchical = '''
 data {
@@ -142,18 +153,23 @@ data_hierarchical = dict(
 )
 
 #%% sampling
-fit_hierarchical = model_seperate.sampling(data=data_hierarchical, n_jobs=-1)
+fit_hierarchical = model_hierarchical.sampling(data=data_hierarchical, n_jobs=-1)
 print(fit_hierarchical)
 
 #%% hist
-y_pred_hierarchical = fit_hierarchical.extract()['ypred']
+mu_data_hierarchical = fit_hierarchical.extract()['mu']
+plt.hist(mu_data_hierarchical[:, 5], bins=20, ec='white')
+plt.savefig('./ex7/report/hierarchical_hist_mu_six.png')
+plt.figure(0)
+
+#%% hist
+y_pred_hierarchical = fit_hierarchical.extract()['ypred6']
 plt.hist(y_pred_hierarchical, bins=20, ec='white')
 plt.savefig('./ex7/report/hierarchical_hist.png')
 plt.figure(0)
 
-summary_hierarchical=fit_hierarchical.summary()
-summary_df_hierarchical=pd.DataFrame(
-    summary_hierarchical['summary'],
-    columns=summary_hierarchical['summary_colnames'],
-    index=summary_hierarchical['summary_rownames']
-)
+#%% hist
+mu_data_hierarchical_7 = fit_hierarchical.extract()['mu7']
+plt.hist(mu_data_hierarchical_7, bins=20, ec='white')
+plt.savefig('./ex7/report/hierarchical_hist_mu_7.png')
+plt.figure(0)

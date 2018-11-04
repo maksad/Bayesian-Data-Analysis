@@ -10,3 +10,4 @@ _minted-report*
 *.snippets
 demos/*
 */demos/*
+.ipynb_checkpoints/*

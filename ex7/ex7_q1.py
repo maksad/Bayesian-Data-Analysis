@@ -12,6 +12,7 @@ drowning_data = pd.read_fwf('./ex7/drowning.txt').values
 years = drowning_data[:, 0]
 drowning = drowning_data[:, 1]
 
+
 #%%
 plt.plot(years, drowning)
 
@@ -51,7 +52,7 @@ generated quantities {
 '''
 
 #%% guess of tau
-dist = norm(loc=0, scale=20)
+dist = norm(loc=0, scale=26.78)
 print(dist.cdf(-69))
 
 #%% fitting data to stan model
